@@ -17,7 +17,7 @@ int main()
   int lda = M;
   int ldb = K;
   int ldc = M;
-  cblas_dgemm(CblasColMajor, CblasNoTrans, CblasNoTrans, M, N, K, alpha, A, lda, B, ldb, beta, C, ldc);
+  cblas_dgemm(CblasRowMajor, CblasNoTrans, CblasNoTrans, M, N, K, alpha, A, lda, B, ldb, beta, C, ldc);
 
   for (i = 0; i < 9; i++)
     printf("%lf ", C[i]);
