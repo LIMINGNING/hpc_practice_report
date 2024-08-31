@@ -5,21 +5,27 @@
 #define K 2
 
 
-void dgemm(int m, int n, int k, int beta,
-          double A[][k], double B[][n], double C[][n]){
-    for(int i=0; i< m;i ++){    //C[i] 
-        for(int j=0; j< n; j++){  //C[i][j]
+void dgemm(int m, int n, int k, int beta,double A[][k], double B[][n], double C[][n])
+{
+    for(int i=0; i< m;i ++)
+    {    //C[i] 
+        for(int j=0; j< n; j++)
+        {  //C[i][j]
             C[i][j] = beta*C[i][j];
-            for(int p=0; p< k; p++){  
+            for(int p=0; p< k; p++)
+            {  
                 C[i][j] += A[i][p]*B[p][j]; 
-             }
+            }
         }
     }
 }
 
-void printf_matrix(int row, int col, double matrix[row][col] ){
-  for(int i=0; i<row; i++){
-    for(int j=0; j<col;j++){
+void printf_matrix(int row, int col, double matrix[row][col] )
+{
+  for(int i=0; i<row; i++)
+  {
+    for(int j=0; j<col;j++)
+    {
         printf("%lf ", matrix[i][j]);
     }
     printf("\n");
