@@ -1,10 +1,13 @@
+*
+!/**/
+!*.*
 *.o
 *.i
 *.s
 *.x
 *.m
 *.out
-*.
+!Makefile
 .vscode
 *.json
 timeDGEMM.txt
