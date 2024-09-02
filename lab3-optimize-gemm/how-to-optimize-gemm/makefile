@@ -1,6 +1,5 @@
 OLD  := MMult0
-NEW  := MMult0
-
+NEW  := Cblas
 
 CC         := gcc
 LINKER     := $(CC) 
@@ -24,7 +23,7 @@ all:
 	make $(BUILD_DIR)/test_MMult.x
 
 $(BUILD_DIR)/test_MMult.x: $(OBJS) defs.h
-	$(LINKER) $(OBJS) $(LDFLAGS) -o $@
+	$(LINKER) $(OBJS) $(LDFLAGS) -o $@ -lopenblas
 
 export OMP_NUM_THREADS=1
 export GOTO_NUM_THREADS=1
