@@ -4,31 +4,22 @@
 #include "time.h"
 #include <cblas.h>
 
-void dgemm(int m, int n, int k,double alpha,double beta,double A[][k], double B[][n], double C[][n])
-{
-    for(int i=0; i< m;i ++)
-    {    //C[i] 
-        for(int j=0; j< n; j++)
-        {  //C[i][j]
-            C[i][j] = beta*C[i][j];
-            for(int p=0; p< k; p++)
-            {
-              C[i][j] += alpha*A[i][p]*B[p][j]; 
-            }
-        }
-    }
-}
+void dgemm(int m, int n, int k, double alpha, double beta, double *A, double *B, double *C)  
+{  
+    for(int i = 0; i < m; i++)  
+    {    
+        for(int j = 0; j < n; j++)  
+        {  
+            C[i * n + j] = beta * C[i * n + j];  
+            for(int p = 0; p < k; p++)  
+            {  
+              C[i * n + j] += alpha * A[i * k + p] * B[p * n + j];   
+            }  
+        }  
+    }  
+}  
 
-void trans(int m,int k,double a[][k],double A[])
-{
-  for(int i=0;i<m;i++)
-  {
-    for(int j=0;j<k;j++)
-    {
-      a[i][j]=A[k*i+j];
-    }
-  }
-}
+
 
 void printf_matrix(int row, int col, double matrix[row][col] )
 {
@@ -36,7 +27,7 @@ void printf_matrix(int row, int col, double matrix[row][col] )
   {
     for(int j=0; j<col;j++)
     {
-        printf("%lf ", matrix[i][j]);
+      printf("%lf ", matrix[i][j]);
     }
     printf("\n");
   }
@@ -71,8 +62,23 @@ int main(int argc, char *argv[])
   double duration;
 
   double *A = (double *)malloc(sizeof(double) * sizeofa);
+  if (!A) 
+  {  
+    perror("Failed to allocate memory for A");  
+    exit(EXIT_FAILURE);  
+  }  
   double *B = (double *)malloc(sizeof(double) * sizeofb);
+  if (!B) 
+  {  
+    perror("Failed to allocate memory for A");  
+    exit(EXIT_FAILURE);  
+  }  
   double *C = (double *)malloc(sizeof(double) * sizeofc);
+  if (!C) 
+  {  
+    perror("Failed to allocate memory for A");  
+    exit(EXIT_FAILURE);  
+  }  
   srand((unsigned)time(NULL));
 
   for (i = 0; i < sizeofa; i++)
@@ -90,16 +96,16 @@ int main(int argc, char *argv[])
     C[i] = 0.1;
   }
   
-  double a[m][k],b[k][n],c[m][n];
-  trans(m,k,a,A);
-  trans(k,n,b,B);
-  trans(m,n,c,C);
-  
   printf("m=%d,n=%d,k=%d,alpha=%lf,beta=%lf,sizeofc=%d\n", m, n, k, alpha, beta, sizeofc);
   gettimeofday(&start, NULL);
   cblas_dgemm(CblasColMajor, CblasNoTrans, CblasNoTrans, m, n, k, alpha, A, lda, B, ldb, beta, C, ldc);
   gettimeofday(&finish, NULL);
-
+  /*
+  for (i = 0; i < sizeofc; i++)
+  {
+    printf("%lf\n",C[i]);
+  }
+  */
   // 转成成秒数
   duration = (double)(finish.tv_sec - start.tv_sec) + (double)(finish.tv_usec - start.tv_usec) / 1.0e6;
   double gflops = 4.0 * m * n * k;
@@ -111,17 +117,14 @@ int main(int argc, char *argv[])
   fclose(fp);
   
   gettimeofday(&start, NULL);
-  dgemm(m,n,k,alpha,beta,a,b,c);
-  
-  printf_matrix(m,n,c);
-  
+  dgemm(m,n,k,alpha,beta,A,B,C);
+  gettimeofday(&finish, NULL);
+  /*
   for (i = 0; i < sizeofc; i++)
   {
-    printf("%lf",C[i]);
+    printf("%lf\n",C[i]);
   }
-  
-  gettimeofday(&finish, NULL);
-
+  */
   duration = (double)(finish.tv_sec - start.tv_sec) + (double)(finish.tv_usec - start.tv_usec) / 1.0e6;
   gflops = 4.0 * m * n * k;
   gflops = gflops / duration * 1.0e-9;
