@@ -19,21 +19,6 @@ void dgemm(int m, int n, int k, double alpha, double beta, double *A, double *B,
     }  
 }  
 
-
-
-void printf_matrix(int row, int col, double matrix[row][col] )
-{
-  for(int i=0; i<row; i++)
-  {
-    for(int j=0; j<col;j++)
-    {
-      printf("%lf ", matrix[i][j]);
-    }
-    printf("\n");
-  }
-  printf("\n\n");
-}
-
 // 编译 gcc -o time_dgemm time_dgemm.c –lopenblas
 // 运行 ./time_dgemm 1024
 int main(int argc, char *argv[])
