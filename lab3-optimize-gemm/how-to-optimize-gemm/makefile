@@ -1,5 +1,5 @@
-OLD  := MMult0
-NEW  := Cblas
+OLD  := Cblas
+NEW  := MMult0
 
 CC         := gcc
 LINKER     := $(CC) 
