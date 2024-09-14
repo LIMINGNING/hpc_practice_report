@@ -17,7 +17,7 @@ typedef struct
 } thread_data;
 
 // 线程处理函数
-void *processingblock(void *arg)
+void *matrix(void *arg)
 {
     thread_data *data = (thread_data *)arg;
     int start_row = data->start_row;
@@ -49,6 +49,7 @@ void MY_MMult(int m, int n, int k, double *a, int lda,
               double *c, int ldc)
 {
     int block;
+
     if (m % 16 == 0 && n % 16 == 0 && k % 16 == 0)
     {
         block = m / 16;
@@ -81,11 +82,11 @@ void MY_MMult(int m, int n, int k, double *a, int lda,
             matrix_thread[threads_count].end_row = end_row;
             matrix_thread[threads_count].start_col = start_col;
             matrix_thread[threads_count].end_col = end_col;
-            matrix_thread[threads_count].n = m;
+            matrix_thread[threads_count].n = n;
             matrix_thread[threads_count].a = a;
             matrix_thread[threads_count].b = b;
             matrix_thread[threads_count].c = c;
-            pthread_create(&threads[threads_count], NULL, processingblock, (void *)&matrix_thread[threads_count]);
+            pthread_create(&threads[threads_count], NULL, matrix, (void *)&matrix_thread[threads_count]);
             threads_count++;
         }
     }

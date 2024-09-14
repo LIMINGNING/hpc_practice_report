@@ -1,12 +1,11 @@
 OLD  := DGEMM
 NEW  := Cblas
 
-
 CC         := gcc
 LINKER     := $(CC) 
 
-CFLAGS     := -Wall -Werror -Wno-unused-result -Wno-unused-value -Wno-unused-variable -g
-LDFLAGS    := -lm -lopenblas -lpthread
+CFLAGS     := -Wall -Werror -Wno-unused-result -Wno-unused-value -Wno-unused-variable -g -fopenmp
+LDFLAGS    := -lm -lopenblas -lpthread -fopenmp
 DATA_DIR = _data
 BUILD_DIR = _build
 OBJS  := $(BUILD_DIR)/util.o $(BUILD_DIR)/REF_MMult.o $(BUILD_DIR)/test_MMult.o $(BUILD_DIR)/$(NEW).o
@@ -25,7 +24,7 @@ all:
 $(BUILD_DIR)/test_MMult.x: $(OBJS) defs.h
 	$(LINKER) $(OBJS) $(LDFLAGS) -o $@
 
-export OMP_NUM_THREADS=1
+export OMP_NUM_THREADS=16
 export GOTO_NUM_THREADS=1
 
 run:
