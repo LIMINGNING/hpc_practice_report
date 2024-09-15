@@ -13,3 +13,5 @@
 timeDGEMM.txt
 report2.md
 *.Identifier
+!makefile
+*.txt
