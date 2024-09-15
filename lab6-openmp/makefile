@@ -1,5 +1,5 @@
 OLD  := DGEMM
-NEW  := Cblas
+NEW  := MMult0
 
 CC         := gcc
 LINKER     := $(CC) 
